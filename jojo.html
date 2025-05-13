@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <title>JoJo's Bizarre Adventure Манга</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .navbar {
+            background-color: #d62b1f;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-links li {
+            margin: 0 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #d62b1f;
+            margin: 30px 0;
+            font-size: 36px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .parts-container {
+            margin-bottom: 40px;
+        }
+        
+        .part-title {
+            background-color: #d62b1f;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 20px 0 15px 0;
+            font-size: 22px;
+            display: inline-block;
+        }
+        
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .chapter-btn {
+            padding: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .chapter-btn:hover {
+            background: #d62b1f;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .pdf-viewer-container {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: white;
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: none;
+        }
+        
+        .no-pdf-message {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="hicheel.html">Хичээлүүд</a></li>
+            <li><a href="shalgat.html">Шалгалтууд</a></li>
+            <li><a href="sonsgol.html">Үзвэр</a></li>
+            <li><a href="reel.html">Рээл</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <h1>JoJo's Bizarre Adventure Манга</h1>
+        
+        <div id="parts-container" class="parts-container">
+            <div class="loading">Ачааллаж байна...</div>
+        </div>
+        
+        <div class="pdf-viewer-container">
+            <iframe id="pdf-viewer" class="pdf-viewer">
+                <div class="no-pdf-message">Энэ хөтөч PDF дэмжихгүй байна. PDF файлыг татаж авах бол дээрх холбоос дээр дарна уу.</div>
+            </iframe>
+        </div>
+    </div>
+    
+    <script>
+        // PDF файлуудын мэдээлэл
+        const pdfFiles = [
+            // Phantom Blood
+            {num: "001", title: "Phantom Blood 1", part: "Phantom Blood"},
+            {num: "002", title: "Phantom Blood 2", part: "Phantom Blood"},
+            {num: "003", title: "Phantom Blood 3", part: "Phantom Blood"},
+            {num: "004", title: "Phantom Blood 4", part: "Phantom Blood"},
+            {num: "005", title: "Phantom Blood 5", part: "Phantom Blood"},
+            
+            // Battle Tendency
+            {num: "006", title: "Battle Tendency 1", part: "Battle Tendency"},
+            {num: "007", title: "Battle Tendency 2", part: "Battle Tendency"},
+            {num: "008", title: "Battle Tendency 3", part: "Battle Tendency"},
+            {num: "009", title: "Battle Tendency 4", part: "Battle Tendency"},
+            {num: "010", title: "Battle Tendency 5", part: "Battle Tendency"},
+            {num: "011", title: "Battle Tendency 6", part: "Battle Tendency"},
+            {num: "012", title: "Battle Tendency 7", part: "Battle Tendency"},
+            {num: "013", title: "Battle Tendency 8", part: "Battle Tendency"},
+            {num: "014", title: "Battle Tendency 9", part: "Battle Tendency"},
+            {num: "015", title: "Battle Tendency 10", part: "Battle Tendency"},
+            {num: "016", title: "Battle Tendency 11", part: "Battle Tendency"},
+            {num: "017", title: "Battle Tendency 12", part: "Battle Tendency"},
+            {num: "018", title: "Battle Tendency 13", part: "Battle Tendency"},
+            {num: "019", title: "Battle Tendency 14", part: "Battle Tendency"},
+            {num: "020", title: "Battle Tendency 15", part: "Battle Tendency"},
+            {num: "021", title: "Battle Tendency 16", part: "Battle Tendency"},
+            {num: "022", title: "Battle Tendency 17", part: "Battle Tendency"},
+            {num: "023", title: "Battle Tendency 18", part: "Battle Tendency"},
+            {num: "024", title: "Battle Tendency 19", part: "Battle Tendency"},
+            {num: "025", title: "Battle Tendency 20", part: "Battle Tendency"},
+            {num: "026", title: "Battle Tendency 21", part: "Battle Tendency"},
+            {num: "027", title: "Battle Tendency 22", part: "Battle Tendency"},
+            {num: "028", title: "Battle Tendency 23", part: "Battle Tendency"},
+            
+            // Diamond is Unbreakable
+            {num: "029", title: "Diamond is Unbreakable 1", part: "Diamond is Unbreakable"},
+            {num: "030", title: "Diamond is Unbreakable 2", part: "Diamond is Unbreakable"},
+            {num: "031", title: "Diamond is Unbreakable 3", part: "Diamond is Unbreakable"},
+            {num: "032", title: "Diamond is Unbreakable 4", part: "Diamond is Unbreakable"},
+            {num: "033", title: "Diamond is Unbreakable 5", part: "Diamond is Unbreakable"},
+            {num: "034", title: "Diamond is Unbreakable 6", part: "Diamond is Unbreakable"},
+            {num: "035", title: "Diamond is Unbreakable 7", part: "Diamond is Unbreakable"},
+            {num: "036", title: "Diamond is Unbreakable 8", part: "Diamond is Unbreakable"},
+            {num: "037", title: "Diamond is Unbreakable 9", part: "Diamond is Unbreakable"},
+            {num: "038", title: "Diamond is Unbreakable 10", part: "Diamond is Unbreakable"},
+            {num: "039", title: "Diamond is Unbreakable 11", part: "Diamond is Unbreakable"},
+            {num: "040", title: "Diamond is Unbreakable 12", part: "Diamond is Unbreakable"},
+            {num: "041", title: "Diamond is Unbreakable 13", part: "Diamond is Unbreakable"},
+            {num: "042", title: "Diamond is Unbreakable 14", part: "Diamond is Unbreakable"},
+            {num: "043", title: "Diamond is Unbreakable 15", part: "Diamond is Unbreakable"},
+            {num: "044", title: "Diamond is Unbreakable 16", part: "Diamond is Unbreakable"},
+            {num: "045", title: "Diamond is Unbreakable 17", part: "Diamond is Unbreakable"},
+            {num: "046", title: "Diamond is Unbreakable 18", part: "Diamond is Unbreakable"},
+            
+            // Vento Aureo
+            {num: "047", title: "Vento Aureo 1", part: "Vento Aureo"},
+            {num: "048", title: "Vento Aureo 2", part: "Vento Aureo"},
+            {num: "049", title: "Vento Aureo 3", part: "Vento Aureo"},
+            {num: "050", title: "Vento Aureo 4", part: "Vento Aureo"},
+            {num: "051", title: "Vento Aureo 5", part: "Vento Aureo"},
+            {num: "052", title: "Vento Aureo 6", part: "Vento Aureo"},
+            {num: "053", title: "Vento Aureo 7", part: "Vento Aureo"},
+            {num: "054", title: "Vento Aureo 8", part: "Vento Aureo"},
+            {num: "055", title: "Vento Aureo 9", part: "Vento Aureo"},
+            {num: "056", title: "Vento Aureo 10", part: "Vento Aureo"},
+            {num: "057", title: "Vento Aureo 11", part: "Vento Aureo"},
+            {num: "058", title: "Vento Aureo 12", part: "Vento Aureo"},
+            {num: "059", title: "Vento Aureo 13", part: "Vento Aureo"},
+            {num: "060", title: "Vento Aureo 14", part: "Vento Aureo"},
+            {num: "061", title: "Vento Aureo 15", part: "Vento Aureo"},
+            {num: "062", title: "Vento Aureo 16", part: "Vento Aureo"},
+            {num: "063", title: "Vento Aureo 17", part: "Vento Aureo"}
+        ];
+
+        // Ангилал бүрдэх функц
+        function groupByPart(files) {
+            return files.reduce((groups, file) => {
+                const part = file.part;
+                if (!groups[part]) {
+                    groups[part] = [];
+                }
+                groups[part].push(file);
+                return groups;
+            }, {});
+        }
+
+        // PDF үзүүлэгч дээр харуулах
+        function displayPDF(file) {
+            const pdfViewer = document.getElementById('pdf-viewer');
+            // Файлын нэр үүсгэх (таны HTML дээрх форматтай тохируулах)
+            let fileName;
+            if (file.part === "Phantom Blood") {
+                fileName = `${file.num} [JP} Jojo - ${file.part}.pdf`;
+            } else {
+                fileName = `${file.num} [JP] JoJo Bizarre Adventure - ${file.part}.pdf`;
+            }
+            pdfViewer.src = fileName;
+        }
+
+        // Хэсгүүдийг дэлгэцэнд харуулах
+        function renderParts() {
+            const partsContainer = document.getElementById('parts-container');
+            const groupedFiles = groupByPart(pdfFiles);
+            
+            partsContainer.innerHTML = '';
+            
+            for (const part in groupedFiles) {
+                const partDiv = document.createElement('div');
+                partDiv.className = 'part-section';
+                
+                const partTitle = document.createElement('h2');
+                partTitle.className = 'part-title';
+                partTitle.textContent = part;
+                partDiv.appendChild(partTitle);
+                
+                const chaptersGrid = document.createElement('div');
+                chaptersGrid.className = 'chapters-grid';
+                
+                groupedFiles[part].forEach(file => {
+                    const chapterBtn = document.createElement('div');
+                    chapterBtn.className = 'chapter-btn';
+                    chapterBtn.textContent = `Бүлэг ${file.num.slice(-2)}`;
+                    chapterBtn.addEventListener('click', () => displayPDF(file));
+                    chaptersGrid.appendChild(chapterBtn);
+                });
+                
+                partDiv.appendChild(chaptersGrid);
+                partsContainer.appendChild(partDiv);
+            }
+            
+            // Эхний PDF-г автоматаар ачаалах
+            if (pdfFiles.length > 0) {
+                displayPDF(pdfFiles[0]);
+            }
+        }
+
+        // Дэлгэц ачаалахад хэсгүүдийг үүсгэх
+        document.addEventListener('DOMContentLoaded', renderParts);
+    </script>
+</body>
+</html>
